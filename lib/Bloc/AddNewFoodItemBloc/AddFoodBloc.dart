@@ -17,7 +17,7 @@ class AddFoodBloc extends Bloc<AddFoodEvent, AddFoodState> {
         if(event.title.isNotEmpty) {
           var res = await _apiRepository.addFood(event.id,event.title,event.description,event.menuType,
               event.foodType,event.price,'false',event.url);
-          if(res.statusCode == 201) {
+          if(res.statusCode == 200) {
             final List<Payload>? items = res.payload;
             emit(onLoadedState(items));
           } else {
@@ -33,7 +33,7 @@ class AddFoodBloc extends Bloc<AddFoodEvent, AddFoodState> {
       try{
         emit(LoadingState()) ;
           final res = await _apiRepository.getAddedMenu(event.id);
-          if(res.statusCode == 201) {
+          if(res.statusCode == 200) {
             final List<Payload>? items = res.payload; // Extract the list from the response
             emit(onLoadedState(items));
           } else {

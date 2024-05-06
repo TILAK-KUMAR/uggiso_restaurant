@@ -4,7 +4,6 @@ import 'package:uggiso_restaurant/Model/RegisterUserModel.dart';
 import 'package:uggiso_restaurant/Model/RestaurantDetailsModel.dart';
 import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
-
 import '../Model/DeleteFoodModel.dart';
 import '../Model/GetRestaurantStatusModel.dart';
 import '../Model/RegisterRestaurantModel.dart';
@@ -147,6 +146,7 @@ class ApiProvider {
 
   Future<GetRestaurantStatusModel> getRestaurantStatus(String id) async {
     try {
+      print('url : ${_url}${Constants.getRestaurantStatus}$id');
       Response response = await _dio.get('${_url}${Constants.getRestaurantStatus}$id');
       print("${response.data}");
 

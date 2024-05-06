@@ -97,7 +97,7 @@ class Strings{
   static const requestSent  = 'Your Request has been sent to us, you will be notified when your request has been accepted.';
   static const verified  = 'Verified';
   static const verified_success  = 'Yahoo! You have successfully verified the account.';
-  static const go_to_home_screen  = 'Go to Homescreen';
+  static const proceed  = 'Proceed';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_fire.png', 'title': your_orders},

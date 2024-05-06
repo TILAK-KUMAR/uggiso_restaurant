@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uggiso_restaurant/Widgets/AddMenu.dart';
 import 'package:uggiso_restaurant/Widgets/AddNewHotelScreen.dart';
 import 'package:uggiso_restaurant/Widgets/HomeScreen.dart';
+import 'package:uggiso_restaurant/Widgets/OnboardingPending.dart';
 import 'package:uggiso_restaurant/Widgets/SuccessfulOnboardingMessage.dart';
 
 import 'Widgets/RegisterUserScreen.dart';
@@ -38,6 +39,8 @@ class AppRoutes {
 
   static const String successOnboarding = '/onboarding_success';
 
+  static const String pendingOnboarding = '/onboarding_success';
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
@@ -61,6 +64,9 @@ class AppRoutes {
 
       case successOnboarding:
         return MaterialPageRoute(builder: (_) => const SuccessfulOnboardingMessage());
+
+      case pendingOnboarding:
+        return MaterialPageRoute(builder: (_) => const OnboardingPending());
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

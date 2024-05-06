@@ -47,7 +47,11 @@ class _MenuTabState extends State<MenuTab> {
         body: BlocBuilder<AddFoodBloc,AddFoodState>(
           builder: (context,state){
             if(state is LoadingState){
-              return Center(child: CircularProgressIndicator(color: AppColors.white,));
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                  color: AppColors.white,
+                  child: Center(child: CircularProgressIndicator(color: AppColors.appPrimaryColor,)));
             }
             else if(state is onLoadedState){
               return state.menuList?.length == 0?Center(child: Text('No Items Found')):Padding(
@@ -73,7 +77,11 @@ class _MenuTabState extends State<MenuTab> {
               );
             }else if (state is ErrorState) {
               // Error state, display the error message
-              return Center(child: Text('Error: ${state.message}'));
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: AppColors.white,
+                  child: Center(child: Text('Error: ${state.message}')));
             } else {
               return Container();
             }
