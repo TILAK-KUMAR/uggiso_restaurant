@@ -25,6 +25,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final SignUpBloc _signUpBloc = SignUpBloc();
   bool isInvalidCredentials = false;
   String number = '';
+  String deviceId = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDeviceId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,5 +123,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void saveNumber(String number) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('mobile_number', number);
+  }
+
+  void getDeviceId() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      deviceId = prefs.getString('device_id') ?? '';
+    });
+    print('this is received device id : $deviceId');
   }
 }

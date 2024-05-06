@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:device_uuid/device_uuid.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../app_routes.dart';
 import '../base/common/utils/colors.dart';
 
@@ -11,13 +13,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String? deviceId = '';
 
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),
-            ()=>Navigator.popAndPushNamed(context, AppRoutes.signupScreen)
-    );
+    getDeviceId();
   }
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
       height: MediaQuery.of(context).size.height,
           color: AppColors.appPrimaryColor,
           child:Image.asset('assets/uggiso_splash.png',width: 200,height: 200)
+    );
+  }
+  void getDeviceId()async{
+    final prefs = await SharedPreferences.getInstance();
+    deviceId = await DeviceUuid().getUUID();
+    prefs.setString('device_id', deviceId!);
+    Timer(Duration(seconds: 3),
+            ()=>Navigator.popAndPushNamed(context, AppRoutes.signupScreen)
     );
   }
 }

@@ -9,4 +9,5 @@ class Constants{
   static String menuList = 'menu/';
   static String addFavMenu = 'favmenu/savefavmenu';
   static String addFood = 'menu/save';
+  static String getRestaurantStatus = 'restaurant/getstatus/';
 }

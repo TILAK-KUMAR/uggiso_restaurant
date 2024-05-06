@@ -30,6 +30,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
   final TextEditingController _landmarkController = TextEditingController();
 
   final RegisterHotelBloc _registerHotelBloc = RegisterHotelBloc();
+
   String selectedState = 'Karnataka';
   String selectedHotelType = 'Street Hotel';
   String hotelOpeningHours = '5:00 AM';
@@ -56,7 +57,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
               style:
               AppFonts.appBarText.copyWith(color: AppColors.appPrimaryColor)),
           leading: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
               width: MediaQuery
                   .of(context)
                   .size
@@ -76,7 +77,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             child: BlocBuilder<RegisterHotelBloc, RegisterHotelState>(
                 builder: (context, state) {
                   if (state is onLoadedState) {
-                    return Center(child: CircularProgressIndicator(
+                    return const Center(child: CircularProgressIndicator(
                       color: AppColors.white,));
                   }
                   else if (state is onLoadedState) {
@@ -125,11 +126,11 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
               cornerRadius: 12,
               padding: 0,
               child: DropdownButtonFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   border: InputBorder.none,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedHotelType,
                 menuMaxHeight: MediaQuery
                     .of(context)
@@ -181,11 +182,11 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
               cornerRadius: 12,
               padding: 0,
               child: DropdownButtonFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   border: InputBorder.none,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedState,
                 menuMaxHeight: MediaQuery
                     .of(context)
@@ -250,11 +251,11 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
               cornerRadius: 12,
               padding: 0,
               child: DropdownButtonFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   border: InputBorder.none,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedCusineType,
                 menuMaxHeight: MediaQuery
                     .of(context)
@@ -298,11 +299,11 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   cornerRadius: 12,
                   padding: 0,
                   child: DropdownButtonFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 0),
                       border: InputBorder.none,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 1),
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
                     value: hotelOpeningHours,
                     menuMaxHeight: MediaQuery
                         .of(context)
@@ -340,11 +341,11 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   cornerRadius: 12,
                   padding: 0,
                   child: DropdownButtonFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 0),
                       border: InputBorder.none,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     value: hotelClosingHours,
                     menuMaxHeight: MediaQuery
                         .of(context)

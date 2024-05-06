@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedElevatedButton.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/TextFieldCurvedEdges.dart';
-
 import '../Bloc/RegisterUserBloc/RegisterUserBloc.dart';
 import '../Bloc/RegisterUserBloc/RegisterUserEvent.dart';
 import '../Bloc/RegisterUserBloc/RegisterUserState.dart';
@@ -24,6 +23,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final TextEditingController _nameController = TextEditingController();
   final RegisterUserBloc _registerUserBloc = RegisterUserBloc();
   String userContactNumber = '';
+  String userDeviceId = '';
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text, '', '',state.id);
+            saveUserDetails(_nameController.text,'',state.id);
 
             Navigator.popAndPushNamed(context, AppRoutes.addNewHotel);
           } else if (state is ErrorState) {
@@ -127,13 +127,14 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userContactNumber = prefs.getString('mobile_number') ?? '';
+      userDeviceId = prefs.getString('device_id') ?? '';
     });
   }
 
-  void saveUserDetails(String name, String deviceId, String token,String id) async {
+  void saveUserDetails(String name,String token,String id) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user_name', name);
-    prefs.setString('device_id', deviceId);
+    prefs.setString('device_id', userDeviceId);
     prefs.setString('fcm_token', token);
     prefs.setString('user_id', id);
   }

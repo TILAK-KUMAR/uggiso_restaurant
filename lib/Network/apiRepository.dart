@@ -1,5 +1,6 @@
 
 import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
+import 'package:uggiso_restaurant/Model/GetRestaurantStatusModel.dart';
 import 'package:uggiso_restaurant/Model/RegisterUserModel.dart';
 import 'package:uggiso_restaurant/Model/RestaurantDetailsModel.dart';
 import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
@@ -51,5 +52,9 @@ class ApiRepository {
   Future<DeleteFoodModel> deleteFoodItem(String id) {
     return _provider.deleteMenuItem(id);
   }
+
+/*  Future<GetRestaurantStatusModel> getRestaurantStatus(String id) {
+    return _provider.getRestaurantStatus(id);
+  }*/
 
 }
