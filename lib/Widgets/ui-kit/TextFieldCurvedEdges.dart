@@ -15,6 +15,7 @@ class TextFieldCurvedEdges extends StatelessWidget {
   final int maxLines;
   final FocusNode? focusNode;
   final ValueChanged<String>? onSubmitted;
+  final TextInputAction? textInputAction;
 
   const TextFieldCurvedEdges({
     Key? key,
@@ -27,8 +28,8 @@ class TextFieldCurvedEdges extends StatelessWidget {
     this.length = 100,
     this.maxLines = 1,
     this.focusNode,
-    this.onSubmitted
-
+    this.onSubmitted,
+    this.textInputAction
   }): super(key: key);
 
   @override
@@ -46,6 +47,7 @@ class TextFieldCurvedEdges extends StatelessWidget {
           controller: controller,
           cursorColor: AppColors.black,
           keyboardType: keyboardType,
+          textInputAction: textInputAction,
           textAlign: textAlign,
           maxLength: length,
           maxLines: maxLines,

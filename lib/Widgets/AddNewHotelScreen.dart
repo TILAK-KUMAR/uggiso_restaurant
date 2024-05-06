@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Bloc/RegisterHotelBloc/RegisterHotelEvent.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
@@ -7,6 +10,7 @@ import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedElevatedButton.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/TextFieldCurvedEdges.dart';
 import '../Bloc/RegisterHotelBloc/RegisterHotelBloc.dart';
 import '../Bloc/RegisterHotelBloc/RegisterHotelState.dart';
+import '../app_routes.dart';
 import '../base/common/utils/colors.dart';
 import '../base/common/utils/fonts.dart';
 import '../base/common/utils/strings.dart';
@@ -41,7 +45,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
 
   @override
   void initState() {
-    getUserNumber();
+    getUserNumber(false,'');
     super.initState();
   }
 
@@ -56,17 +60,12 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
           title: Text(Strings.hotel_details,
               style:
               AppFonts.appBarText.copyWith(color: AppColors.appPrimaryColor)),
-          leading: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.01,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.01,
-              child: Image.asset('assets/ic_back.png')),
+          leading:  IconButton(
+            icon: Image.asset('assets/ic_back.png',width: 16,height: 16,color: AppColors.black,),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: AppColors.white,
           elevation: 0.0,
         ),
@@ -76,13 +75,18 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 horizontal: 16.0, vertical: 8.0),
             child: BlocBuilder<RegisterHotelBloc, RegisterHotelState>(
                 builder: (context, state) {
-                  if (state is onLoadedState) {
+                  if (state is LoadingState) {
                     return const Center(child: CircularProgressIndicator(
                       color: AppColors.white,));
                   }
                   else if (state is onLoadedState) {
-                    print('this is loadedState hotel id : ${state.id}');
-                    return Container();
+                    if(state.id==null){
+                      return mainWidget();
+                    }
+                    else {
+                      getUserNumber(true, state.id!);
+                      return Container();
+                    }
                   }
                   else {
                     return mainWidget();
@@ -151,7 +155,6 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   setState(() {
                     selectedHotelType = newValue!;
                   });
-                  print('this is selected value : $newValue');
                 },
               )),
           const SizedBox(height: 10.0),
@@ -207,7 +210,6 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   setState(() {
                     selectedState = newValue!;
                   });
-                  print('this is selected value : $newValue');
                 },
               )),
           const SizedBox(height: 10.0),
@@ -276,7 +278,6 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   setState(() {
                     selectedCusineType = newValue!;
                   });
-                  print('this is selected value : $newValue');
                 },
               )),
           const SizedBox(height: 10.0),
@@ -324,7 +325,6 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                       setState(() {
                         hotelOpeningHours = newValue!;
                       });
-                      print('this is selected value : $newValue');
                     },
                   )),
 
@@ -388,7 +388,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
           TextFieldCurvedEdges(
             controller: _accountNumberController,
             backgroundColor: AppColors.white,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.phone,
             borderColor: AppColors.borderColor,
             borderRadius: 6,
           ),
@@ -410,7 +410,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
           TextFieldCurvedEdges(
             controller: _aadharController,
             backgroundColor: AppColors.white,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.phone,
             borderColor: AppColors.borderColor,
             borderRadius: 6,
           ),
@@ -441,6 +441,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 text: Strings.submit,
                 onPressed: () {
                   registerHotel();
+                  // _showBottomSheet(context);
                 },
                 cornerRadius: 6.0,
                 buttonColor: AppColors.appPrimaryColor,
@@ -450,13 +451,20 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
         ],
       );
 
-  void getUserNumber() async {
+  void getUserNumber(bool isRestaurantCreated,String id) async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userContactNumber = prefs.getString('mobile_number') ?? '';
-      ownerId = prefs.getString('user_id') ?? '';
-    });
-    print('this is received userId : $ownerId');
+    if(!isRestaurantCreated){
+      setState(() {
+        userContactNumber = prefs.getString('mobile_number') ?? '';
+        ownerId = prefs.getString('user_id') ?? '';
+      });
+    }
+    else{
+      prefs.setString('restaurant_id', id);
+      _showBottomSheet(context);
+      // Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
+    }
+
   }
 
   void registerHotel() {
@@ -471,5 +479,56 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
         ifsc: _ifscController.text,
         upi: _upiIdController.text,
         image: 'image'));
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height*0.4,
+          decoration: const BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32), topRight: Radius.circular(24)),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset('assets/ic_onboarding_success.png',height: 100,width: 100,),
+                Gap(18),
+                Text(
+                  Strings.thankyou,
+                  style:AppFonts.subHeader.copyWith(fontWeight: FontWeight.w600,color: AppColors.appPrimaryColor),
+                ),
+                Gap(18),
+                Text(
+                  Strings.requestSent,
+                  style:AppFonts.title.copyWith(fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+                Gap(18),
+                RoundedElevatedButton(
+                  onPressed: () {
+                    exit(0);
+                    // Navigator.pop(context); // Close the bottom sheet
+                  },
+                  width: MediaQuery.of(context).size.width*0.2,
+                  height: MediaQuery.of(context).size.height*0.04,
+                  text: 'OK',
+                  cornerRadius: 18,
+                  buttonColor: AppColors.appPrimaryColor,
+                  textStyle: AppFonts.header.copyWith(color: AppColors.white),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

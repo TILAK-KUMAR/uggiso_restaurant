@@ -145,7 +145,7 @@ class ApiProvider {
     }
   }
 
- /* Future<GetRestaurantStatusModel> getRestaurantStatus(String id) async {
+  Future<GetRestaurantStatusModel> getRestaurantStatus(String id) async {
     try {
       Response response = await _dio.get('${_url}${Constants.getRestaurantStatus}$id');
       print("${response.data}");
@@ -155,5 +155,5 @@ class ApiProvider {
       print("Exception occured: $error stackTrace: $stacktrace");
       return GetRestaurantStatusModel.withError("Data not found / Connection issue");
     }
-  }*/
+  }
 }

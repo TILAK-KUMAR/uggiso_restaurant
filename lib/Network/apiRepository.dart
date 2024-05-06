@@ -53,8 +53,8 @@ class ApiRepository {
     return _provider.deleteMenuItem(id);
   }
 
-/*  Future<GetRestaurantStatusModel> getRestaurantStatus(String id) {
+  Future<GetRestaurantStatusModel> getRestaurantStatus(String id) {
     return _provider.getRestaurantStatus(id);
-  }*/
+  }
 
 }

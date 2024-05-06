@@ -71,10 +71,10 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                 const SizedBox(height: 20.0),
                 TextFieldCurvedEdges(
                   controller: _nameController,
-                  backgroundColor: AppColors.textFieldBg,
+                  backgroundColor: AppColors.white,
                   keyboardType: TextInputType.name,
-                  borderColor: AppColors.textFieldBorderColor,
-                  borderRadius: 6,
+                  borderColor: AppColors.borderColor,
+                  borderRadius: 10,
                 ),
                 const SizedBox(height: 20.0),
                 Text(Strings.phone_number,
@@ -86,7 +86,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        '$userContactNumber',
+                        '7694859204',
                         style:
                             AppFonts.title.copyWith(color: AppColors.borderColor,fontSize: 18),
                       ),
@@ -105,7 +105,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               context, AppRoutes.homeScreen);*/
                           _registerUserBloc.add(OnRegisterButtonClicked(
                               name: _nameController.text,
-                              number: userContactNumber,
+                              number: '7694859201',
                               deviceId: "TilaksDevice",
                               token: "FcmTokenId"));
                         },

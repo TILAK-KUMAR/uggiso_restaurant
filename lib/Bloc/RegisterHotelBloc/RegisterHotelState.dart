@@ -12,7 +12,7 @@ class InitialState extends RegisterHotelState {}
 class LoadingState extends RegisterHotelState {}
 
 class onLoadedState extends RegisterHotelState {
-  final String id;
+  final String? id;
   const onLoadedState(this.id);
 }
 

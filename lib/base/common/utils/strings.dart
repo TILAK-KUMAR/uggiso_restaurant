@@ -93,6 +93,11 @@ class Strings{
   static const preparing  = 'Preparing';
   static const completed  = 'Completed';
   static const ready  = 'Ready';
+  static const thankyou  = 'Thank you!';
+  static const requestSent  = 'Your Request has been sent to us, you will be notified when your request has been accepted.';
+  static const verified  = 'Verified';
+  static const verified_success  = 'Yahoo! You have successfully verified the account.';
+  static const go_to_home_screen  = 'Go to Homescreen';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_fire.png', 'title': your_orders},

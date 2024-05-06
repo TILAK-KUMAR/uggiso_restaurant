@@ -14,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String? deviceId = '';
+  String? restId = '';
 
   @override
   void initState() {
@@ -33,8 +34,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final prefs = await SharedPreferences.getInstance();
     deviceId = await DeviceUuid().getUUID();
     prefs.setString('device_id', deviceId!);
+    restId = prefs.getString('restaurant_id');
+    print('this is restaurant id :$restId');
     Timer(Duration(seconds: 3),
-            ()=>Navigator.popAndPushNamed(context, AppRoutes.signupScreen)
+            ()=>Navigator.popAndPushNamed(context, AppRoutes.registerUser)
     );
   }
 }
