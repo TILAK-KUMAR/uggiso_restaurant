@@ -12,6 +12,8 @@ class InitialState extends RegisterHotelState {}
 class LoadingState extends RegisterHotelState {}
 
 class onLoadedState extends RegisterHotelState {
+  final String id;
+  const onLoadedState(this.id);
 }
 
 class ErrorState extends RegisterHotelState {

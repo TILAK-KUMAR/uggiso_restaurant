@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3),
-            ()=>Navigator.popAndPushNamed(context, AppRoutes.addNewHotel)
+            ()=>Navigator.popAndPushNamed(context, AppRoutes.signupScreen)
     );
   }
   @override

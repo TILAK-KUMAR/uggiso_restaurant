@@ -11,7 +11,10 @@ class InitialState extends RegisterUserState {}
 
 class LoadingState extends RegisterUserState {}
 
-class onLoadedState extends RegisterUserState {}
+class onLoadedState extends RegisterUserState {
+  final String id;
+  const onLoadedState(this.id);
+}
 
 class ErrorState extends RegisterUserState {
   final String? message;

@@ -18,6 +18,7 @@ class _DashboardOrderCardState extends State<DashboardOrderCard> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RoundedContainer(
                 width: MediaQuery
@@ -39,5 +40,4 @@ class _DashboardOrderCardState extends State<DashboardOrderCard> {
     );
   }
 
-  Widget ItemRow(Widget icon, Widget text, String cost) =>
 }

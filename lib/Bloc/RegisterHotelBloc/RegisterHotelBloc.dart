@@ -14,9 +14,10 @@ class RegisterHotelBloc extends Bloc<RegisterHotelEvent, RegisterHotelState> {
       try{
         emit(LoadingState()) ;
         if(event.name.isNotEmpty) {
-          await _apiRepository.registerUser(event.name,event.number,
-              'RESTAURANT',event.deviceId,event.token);
-          emit(onLoadedState());
+          var res = await _apiRepository.registerRestaurant(event.id,event.name,event.phone,
+              event.address,event.landmark,event.city,event.state,event.accountNumber,event.ifsc, event.upi,event.image);
+          print('this is res : ${res.payload?.restaurantId}');
+          emit(onLoadedState(res.payload!.restaurantId.toString()));
         }
         else{
           emit(ErrorState(''));

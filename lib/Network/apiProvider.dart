@@ -6,6 +6,7 @@ import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
 
 import '../Model/DeleteFoodModel.dart';
+import '../Model/RegisterRestaurantModel.dart';
 import 'constants.dart';
 
 
@@ -57,6 +58,32 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return RegisterUserModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<RegisterReataurantModel> registerRestaurant(String id,String name,String number,
+      String address,String landmark,String city,String state,String accountNumber,String ifscCode,
+      String upiData,String imageUrl) async {
+    try {
+      Response response = await _dio.post('${_url}${Constants.registerUser}',data: {
+        "ownerId":id,
+        "restaurantName":name,
+        "phoneNumber": number,
+        "address": address,
+        "landmark": landmark,
+        "city": city,
+        "state":state,
+        "accountNumber":accountNumber,
+        "ifscCode":ifscCode,
+        "upiData":upiData,
+        "imageUrl":imageUrl
+      });
+      print("${response.data}");
+
+      return RegisterReataurantModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return RegisterReataurantModel.withError("Data not found / Connection issue");
     }
   }
 
