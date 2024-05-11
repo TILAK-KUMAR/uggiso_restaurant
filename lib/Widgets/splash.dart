@@ -56,6 +56,5 @@ class _SplashScreenState extends State<SplashScreen> {
   Future getRestaurantStatus(String? id) async{
     var res = await ApiRepository().getRestaurantStatus(id!);
     return res.payload?.restaurantStatus;
-    print(res);
   }
 }

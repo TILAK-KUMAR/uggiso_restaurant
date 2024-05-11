@@ -461,8 +461,8 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
     }
     else{
       prefs.setString('restaurant_id', id);
-      _showBottomSheet(context);
-      // Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
+      // _showBottomSheet(context);
+      Navigator.popAndPushNamed(context, AppRoutes.pendingOnboarding);
     }
 
   }
