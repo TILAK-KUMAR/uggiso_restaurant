@@ -81,7 +81,7 @@ class _MenuTabState extends State<MenuTab> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   color: AppColors.white,
-                  child: Center(child: Text('Error: ${state.message}')));
+                  child: Center(child: Text('${state.message}')));
             } else {
               return Container();
             }

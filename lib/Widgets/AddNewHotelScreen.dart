@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Bloc/RegisterHotelBloc/RegisterHotelEvent.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
@@ -21,12 +19,14 @@ class AddNewHotelScreen extends StatefulWidget {
   @override
   State<AddNewHotelScreen> createState() => _AddNewHotelScreenState();
 }
-
 class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _upiIdController = TextEditingController();
-  final TextEditingController _accountNumberController = TextEditingController();
+  late GoogleMapController mapController;
+
+  final TextEditingController _accountNumberController =
+      TextEditingController();
   final TextEditingController _ifscController = TextEditingController();
   final TextEditingController _aadharController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
@@ -42,10 +42,12 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
   String selectedCusineType = 'Indian';
   String userContactNumber = '';
   String ownerId = '';
+  double? lat = 0.0;
+  double? lng = 0.0;
 
   @override
   void initState() {
-    getUserNumber(false,'');
+    getUserNumber(false, '');
     super.initState();
   }
 
@@ -58,10 +60,15 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(Strings.hotel_details,
-              style:
-              AppFonts.appBarText.copyWith(color: AppColors.appPrimaryColor)),
-          leading:  IconButton(
-            icon: Image.asset('assets/ic_back.png',width: 16,height: 16,color: AppColors.black,),
+              style: AppFonts.appBarText
+                  .copyWith(color: AppColors.appPrimaryColor)),
+          leading: IconButton(
+            icon: Image.asset(
+              'assets/ic_back.png',
+              width: 16,
+              height: 16,
+              color: AppColors.black,
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -71,36 +78,33 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: BlocBuilder<RegisterHotelBloc, RegisterHotelState>(
                 builder: (context, state) {
-                  if (state is LoadingState) {
-                    return const Center(child: CircularProgressIndicator(
-                      color: AppColors.white,));
-                  }
-                  else if (state is onLoadedState) {
-                    if(state.id==null){
-                      return mainWidget();
-                    }
-                    else {
-                      getUserNumber(true, state.id!);
-                      return Container();
-                    }
-                  }
-                  else {
-                    return mainWidget();
-                  }
+              if (state is LoadingState) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: AppColors.white,
+                ));
+              } else if (state is onLoadedState) {
+                if (state.id == null) {
+                  return mainWidget();
+                } else {
+                  getUserNumber(true, state.id!);
+                  return Container();
                 }
-            ),
+              } else {
+                return mainWidget();
+              }
+            }),
           ),
         ),
       ),
     );
   }
 
-  Widget mainWidget() =>
-      Column(
+  Widget mainWidget() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Strings.hotel_name,
@@ -114,18 +118,26 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             borderRadius: 6,
           ),
           const SizedBox(height: 10.0),
-          Text(Strings.hotel_type,
+       /* Container(
+          height: 400,
+          child: GoogleMap(
+            onMapCreated: _onMapCreated,
+            onTap: (LatLng latLng) {
+              final lat = latLng.latitude;
+              final long = latLng.longitude;
+              print('this is lat : $lat');
+              print('this is lng : $long');
+            }, initialCameraPosition:  CameraPosition(
+            target: _initialPosition,
+            zoom: 15.0,
+          ),
+          ),),*/
+        /*  Text(Strings.hotel_type,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
           RoundedContainer(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.05,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.05,
               color: AppColors.white,
               cornerRadius: 12,
               padding: 0,
@@ -136,10 +148,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedHotelType,
-                menuMaxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.4,
+                menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
                 icon: Image.asset(
                   'assets/ic_dropdown_arrow.png',
                   width: 12.0,
@@ -156,7 +165,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                     selectedHotelType = newValue!;
                   });
                 },
-              )),
+              )),*/
           const SizedBox(height: 10.0),
           Text(Strings.address,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
@@ -173,14 +182,8 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
           RoundedContainer(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.05,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.05,
               color: AppColors.white,
               cornerRadius: 12,
               padding: 0,
@@ -191,10 +194,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedState,
-                menuMaxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.4,
+                menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
                 icon: Image.asset(
                   'assets/ic_dropdown_arrow.png',
                   width: 12.0,
@@ -213,7 +213,6 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 },
               )),
           const SizedBox(height: 10.0),
-
           Text(Strings.city,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
@@ -236,19 +235,13 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             borderRadius: 6,
           ),
           const SizedBox(height: 10.0),
-          const SizedBox(height: 10.0),
+          // const SizedBox(height: 10.0),
           Text(Strings.cuisine_Type,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
           RoundedContainer(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.05,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.05,
               color: AppColors.white,
               cornerRadius: 12,
               padding: 0,
@@ -259,10 +252,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 value: selectedCusineType,
-                menuMaxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.4,
+                menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
                 icon: Image.asset(
                   'assets/ic_dropdown_arrow.png',
                   width: 12.0,
@@ -280,7 +270,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                   });
                 },
               )),
-          const SizedBox(height: 10.0),
+          /*const SizedBox(height: 10.0),
           Text(Strings.operating_Hours,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
@@ -288,14 +278,8 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RoundedContainer(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.4,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.05,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   color: AppColors.white,
                   cornerRadius: 12,
                   padding: 0,
@@ -306,10 +290,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 1),
                     value: hotelOpeningHours,
-                    menuMaxHeight: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.45,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.45,
                     icon: Image.asset(
                       'assets/ic_dropdown_arrow.png',
                       width: 12.0,
@@ -327,16 +308,9 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                       });
                     },
                   )),
-
               RoundedContainer(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.45,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.05,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   color: AppColors.white,
                   cornerRadius: 12,
                   padding: 0,
@@ -347,10 +321,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     value: hotelClosingHours,
-                    menuMaxHeight: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.4,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
                     icon: Image.asset(
                       'assets/ic_dropdown_arrow.png',
                       width: 12.0,
@@ -369,7 +340,7 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
                     },
                   )),
             ],
-          ),
+          ),*/
           const SizedBox(height: 10.0),
           Text(Strings.upi_id,
               style: AppFonts.title.copyWith(color: AppColors.textColor)),
@@ -425,50 +396,49 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             borderColor: AppColors.borderColor,
             borderRadius: 6,
           ),
-          const SizedBox(height: 10.0),
+         /* const SizedBox(height: 10.0),
           Text(Strings.hotel_image,
-              style: AppFonts.title.copyWith(color: AppColors.textColor)),
+              style: AppFonts.title.copyWith(color: AppColors.textColor)),*/
           const SizedBox(height: 10.0),
           Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.only(bottom: 10),
             child: RoundedElevatedButton(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 height: 40.0,
                 text: Strings.submit,
                 onPressed: () {
                   registerHotel();
-                  // _showBottomSheet(context);
                 },
                 cornerRadius: 6.0,
                 buttonColor: AppColors.appPrimaryColor,
-                textStyle:
-                AppFonts.header.copyWith(color: AppColors.white)),
+                textStyle: AppFonts.header.copyWith(color: AppColors.white)),
           ),
         ],
       );
 
-  void getUserNumber(bool isRestaurantCreated,String id) async {
+  void getUserNumber(bool isRestaurantCreated, String id) async {
     final prefs = await SharedPreferences.getInstance();
-    if(!isRestaurantCreated){
+    setState(() {
+      lat =  prefs.getDouble('user_latitude');
+      lng =  prefs.getDouble('user_longitude');
+
+    });
+
+    if (!isRestaurantCreated) {
       setState(() {
         userContactNumber = prefs.getString('mobile_number') ?? '';
         ownerId = prefs.getString('user_id') ?? '';
       });
-    }
-    else{
+    } else {
       prefs.setString('restaurant_id', id);
-      // _showBottomSheet(context);
       Navigator.popAndPushNamed(context, AppRoutes.pendingOnboarding);
     }
-
   }
 
   void registerHotel() {
-    _registerHotelBloc.add(OnSubmitButtonClicked(id: ownerId,
+    _registerHotelBloc.add(OnSubmitButtonClicked(
+        id: ownerId,
         name: _nameController.text,
         phone: userContactNumber,
         address: _addressController.text,
@@ -478,57 +448,12 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
         accountNumber: _accountNumberController.text,
         ifsc: _ifscController.text,
         upi: _upiIdController.text,
-        image: 'image'));
+        image: 'image',
+        lat: lat!,
+        lng: lng!));
   }
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      context: context,
-      isDismissible: false,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height*0.4,
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32), topRight: Radius.circular(24)),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.asset('assets/ic_onboarding_success.png',height: 100,width: 100,),
-                Gap(18),
-                Text(
-                  Strings.thankyou,
-                  style:AppFonts.subHeader.copyWith(fontWeight: FontWeight.w600,color: AppColors.appPrimaryColor),
-                ),
-                Gap(18),
-                Text(
-                  Strings.requestSent,
-                  style:AppFonts.title.copyWith(fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-                Gap(18),
-                RoundedElevatedButton(
-                  onPressed: () {
-                    exit(0);
-                    // Navigator.pop(context); // Close the bottom sheet
-                  },
-                  width: MediaQuery.of(context).size.width*0.2,
-                  height: MediaQuery.of(context).size.height*0.04,
-                  text: 'OK',
-                  cornerRadius: 18,
-                  buttonColor: AppColors.appPrimaryColor,
-                  textStyle: AppFonts.header.copyWith(color: AppColors.white),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
   }
 }

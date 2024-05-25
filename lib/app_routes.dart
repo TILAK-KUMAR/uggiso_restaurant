@@ -39,7 +39,7 @@ class AppRoutes {
 
   static const String successOnboarding = '/onboarding_success';
 
-  static const String pendingOnboarding = '/onboarding_success';
+  static const String pendingOnboarding = '/pending_onboarding';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {

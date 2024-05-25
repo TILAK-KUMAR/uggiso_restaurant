@@ -35,7 +35,7 @@ class GetRestaurantStatusModel {
 
 class Payload {
   String? restaurantId;
-  Null? restaurantStatus;
+  String? restaurantStatus;
 
   Payload({this.restaurantId, this.restaurantStatus});
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'Bloc/SignUpBloc/signup_bloc.dart';
@@ -7,6 +8,8 @@ import 'app_routes.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);
   runApp(
       MultiBlocProvider(
           providers: [

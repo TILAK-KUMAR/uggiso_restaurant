@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Network/apiRepository.dart';
 import '../app_routes.dart';
+import '../base/common/utils/LocationManager.dart';
 import '../base/common/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -35,26 +36,30 @@ class _SplashScreenState extends State<SplashScreen> {
     final prefs = await SharedPreferences.getInstance();
     deviceId = await DeviceUuid().getUUID();
     prefs.setString('device_id', deviceId!);
+    LocationInfo _location = await LocationManager.getCurrentPosition();
+    prefs.setDouble('user_longitude', _location.longitude);
+    prefs.setDouble('user_latitude', _location.latitude);
+
     restId = prefs.getString('restaurant_id');
-    print('this is restaurant id :$restId');
-    Timer(Duration(seconds: 3),
-            (){
-      if(restId == 'null')
-      Navigator.popAndPushNamed(context, AppRoutes.signupScreen);
+
+      if(restId==null) {
+        Navigator.popAndPushNamed(context, AppRoutes.signupScreen);
+      }
       else{
-        var _isRegistered = getRestaurantStatus(restId);
-        if(_isRegistered==null){
+        var res = await getRestaurantStatus(restId);
+        var _isRegistered = res.restaurantStatus.toString();
+
+        if(_isRegistered=='CREATED'){
           Navigator.popAndPushNamed(context, AppRoutes.pendingOnboarding);
         }
         else{
           Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
         }
       }
-    }
-    );
   }
+
   Future getRestaurantStatus(String? id) async{
     var res = await ApiRepository().getRestaurantStatus(id!);
-    return res.payload?.restaurantStatus;
+    return res.payload;
   }
 }

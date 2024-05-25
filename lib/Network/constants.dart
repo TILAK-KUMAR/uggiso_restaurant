@@ -8,6 +8,8 @@ class Constants{
   static String restaurantDetails = 'restaurant/details/';
   static String menuList = 'menu/';
   static String addFavMenu = 'favmenu/savefavmenu';
+  static String addFavRestaurant = 'favrestaurant/savefavrestaurant';
   static String addFood = 'menu/save';
   static String getRestaurantStatus = 'restaurant/getstatus/';
+  static String getCustomerOrder = 'order/myorders/';
 }

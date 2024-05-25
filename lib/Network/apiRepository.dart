@@ -30,8 +30,8 @@ class ApiRepository {
 
   Future<RegisterReataurantModel> registerRestaurant(String id,String name,String number,
       String address,String landmark,String city,String state,String accountNumber,String ifscCode,
-      String upiData,String imageUrl) {
-    return _provider.registerRestaurant(id,name,number,address,landmark,city,state,accountNumber,ifscCode,upiData,imageUrl);
+      String upiData,String imageUrl,double lat, double lng) {
+    return _provider.registerRestaurant(id,name,number,address,landmark,city,state,accountNumber,ifscCode,upiData,imageUrl,lat,lng);
   }
 
 

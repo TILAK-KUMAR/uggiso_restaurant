@@ -6,27 +6,35 @@ import '../../Network/NetworkError.dart';
 import '../../Network/apiRepository.dart';
 
 class RegisterHotelBloc extends Bloc<RegisterHotelEvent, RegisterHotelState> {
-  RegisterHotelBloc() : super(InitialState()){
+  RegisterHotelBloc() : super(InitialState()) {
     final ApiRepository _apiRepository = ApiRepository();
 
-    on<OnSubmitButtonClicked>((event,emit) async{
-
-      try{
-        emit(LoadingState()) ;
-        if(event.name.isNotEmpty) {
-          var res = await _apiRepository.registerRestaurant(event.id,event.name,event.phone,
-              event.address,event.landmark,event.city,event.state,event.accountNumber,event.ifsc, event.upi,event.image);
+    on<OnSubmitButtonClicked>((event, emit) async {
+      try {
+        emit(LoadingState());
+        if (event.name.isNotEmpty) {
+          var res = await _apiRepository.registerRestaurant(
+              event.id,
+              event.name,
+              event.phone,
+              event.address,
+              event.landmark,
+              event.city,
+              event.state,
+              event.accountNumber,
+              event.ifsc,
+              event.upi,
+              event.image,
+              event.lat,
+              event.lng);
           print('this is res : ${res.payload?.restaurantId}');
           emit(onLoadedState(res.payload!.restaurantId));
-        }
-        else{
+        } else {
           emit(ErrorState(''));
         }
-
       } on NetworkError {
         print('this is network error');
       }
     });
   }
-
 }

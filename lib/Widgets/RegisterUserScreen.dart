@@ -39,7 +39,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text,'',state.id);
+            saveUserDetails(_nameController.text,'fcmtoken',state.id);
 
             Navigator.popAndPushNamed(context, AppRoutes.addNewHotel);
           } else if (state is ErrorState) {
@@ -86,7 +86,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        '7694859204',
+                        userContactNumber,
                         style:
                             AppFonts.title.copyWith(color: AppColors.borderColor,fontSize: 18),
                       ),
@@ -105,8 +105,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               context, AppRoutes.homeScreen);*/
                           _registerUserBloc.add(OnRegisterButtonClicked(
                               name: _nameController.text,
-                              number: '7694859201',
-                              deviceId: "TilaksDevice",
+                              number: userContactNumber,
+                              deviceId: userDeviceId,
                               token: "FcmTokenId"));
                         },
                         cornerRadius: 6.0,

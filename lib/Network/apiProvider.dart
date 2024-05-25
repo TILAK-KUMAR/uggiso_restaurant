@@ -63,7 +63,7 @@ class ApiProvider {
 
   Future<RegisterReataurantModel> registerRestaurant(String id,String name,String number,
       String address,String landmark,String city,String state,String accountNumber,String ifscCode,
-      String upiData,String imageUrl) async {
+      String upiData,String imageUrl, double lat, double lng) async {
     try {
       Response response = await _dio.post('${_url}${Constants.registerRestaurant}',data: {
         "ownerId":id,
@@ -76,7 +76,9 @@ class ApiProvider {
         "accountNumber":accountNumber,
         "ifscCode":ifscCode,
         "upiData":upiData,
-        "imageUrl":imageUrl
+        "imageUrl":imageUrl,
+        "lat":lat,
+        "lng":lng
       });
       print("${response.data}");
 

@@ -27,27 +27,31 @@ class _OnboardingPendingState extends State<OnboardingPending> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: RoundedContainer(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.35,
+              height: MediaQuery.of(context).size.height * 0.45,
               cornerRadius: 18,
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Gap(16),
+                  Gap(12),
                   Image.asset(
                     'assets/ic_onboarding_success.png',
-                    width: 80,
-                    height: 80,
+                    width: 140,
+                    height: 140,
                   ),
-                  Gap(24),
+                  Gap(18),
                   Text(
                     Strings.thankyou,
-                    style: AppFonts.subHeader.copyWith(fontWeight: FontWeight.w600,color: AppColors.appPrimaryColor),
+                    style: AppFonts.header1.copyWith(fontWeight: FontWeight.w600,color: AppColors.appPrimaryColor),
                   ),
                   Gap(24),
-                  Text(
-                    Strings.verified_success,
-                    style: AppFonts.title.copyWith(fontSize: 14),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      Strings.requestSent,
+                      textAlign: TextAlign.center,
+                      style: AppFonts.title
+                    ),
                   ),
                   Gap(24),
                   RoundedElevatedButton(
@@ -55,7 +59,7 @@ class _OnboardingPendingState extends State<OnboardingPending> {
                       exit(0);
                       // Navigator.pop(context); // Close the bottom sheet
                     },
-                    width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width*0.4,
                     height: MediaQuery.of(context).size.height*0.04,
                     text: 'OK',
                     cornerRadius: 18,

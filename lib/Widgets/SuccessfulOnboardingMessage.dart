@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedElevatedButton.dart';
 import 'package:uggiso_restaurant/base/common/utils/colors.dart';
@@ -57,6 +58,7 @@ class _SuccessfulOnboardingMessageState
                         height: MediaQuery.of(context).size.height * 0.05,
                         text: Strings.proceed,
                         onPressed: () {
+                          saveUser();
                           Navigator.popAndPushNamed(
                               context, AppRoutes.dashboard);
                         },
@@ -70,5 +72,11 @@ class _SuccessfulOnboardingMessageState
             ),
           ),
         ));
+  }
+
+  void saveUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool('is_user_logged_in', true);
   }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1071073412864",
+    "project_id": "uggiso-restaurant",
+    "storage_bucket": "uggiso-restaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071073412864:android:54ef7ad9aa4191c51cd5e5",
+        "android_client_info": {
+          "package_name": "com.uggiso.restuarant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWj8HY1-QKdD_wPlE66teBYPem-5XiXlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

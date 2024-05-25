@@ -16,6 +16,8 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
   final String ifsc;
   final String upi;
   final String image;
+  final double lat;
+  final double lng;
 
   const OnSubmitButtonClicked({
     required this.id,
@@ -29,6 +31,8 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
     required this.ifsc,
     required this.upi,
     required this.image,
+    required this.lat,
+    required this.lng,
   });
 
   @override
