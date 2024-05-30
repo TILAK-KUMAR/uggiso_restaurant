@@ -12,4 +12,5 @@ class Constants{
   static String addFood = 'menu/save';
   static String getRestaurantStatus = 'restaurant/getstatus/';
   static String getCustomerOrder = 'order/myorders/';
+  static String getRestaurantOrder = 'order/restaurant/';
 }

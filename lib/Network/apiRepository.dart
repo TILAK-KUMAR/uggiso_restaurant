@@ -1,12 +1,11 @@
-
 import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
 import 'package:uggiso_restaurant/Model/GetRestaurantStatusModel.dart';
 import 'package:uggiso_restaurant/Model/RegisterUserModel.dart';
 import 'package:uggiso_restaurant/Model/RestaurantDetailsModel.dart';
+import 'package:uggiso_restaurant/Model/RestaurantOrderModel.dart';
 import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
 import 'package:uggiso_restaurant/Network/apiProvider.dart';
-
 import '../Model/DeleteFoodModel.dart';
 import '../Model/RegisterRestaurantModel.dart';
 
@@ -55,6 +54,10 @@ class ApiRepository {
 
   Future<GetRestaurantStatusModel> getRestaurantStatus(String id) {
     return _provider.getRestaurantStatus(id);
+  }
+
+  Future<RestaurantOrderModel> getRestaurantOrder(String id) {
+    return _provider.getRestaurantOrder(id);
   }
 
 }

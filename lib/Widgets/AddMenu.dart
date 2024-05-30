@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,13 +32,13 @@ class _AddMenuState extends State<AddMenu> {
   final AddFoodBloc _addFoodBloc = AddFoodBloc();
   TextInputType string = TextInputType.text;
   TextInputType number = TextInputType.number;
-  File? _image = null;
   final picker = ImagePicker();
   String foodType = 'VEG';
   bool isFoodTypeClickedVeg = false;
   bool isFoodTypeClickedNonVeg = false;
   String restaurantId = '';
   String foodImage = '';
+  XFile? _image;
 
   @override
   void initState() {
@@ -194,7 +193,7 @@ class _AddMenuState extends State<AddMenu> {
             style: AppFonts.smallText.copyWith(fontSize: 16),
           ),
           InkWell(
-            onTap: () => captureImage(ImageSource.gallery),
+            onTap: () => captureImage(),
             child: RoundedContainer(
                 width: MediaQuery.of(context).size.width * 0.2,
                 height: MediaQuery.of(context).size.height * 0.1,
@@ -204,7 +203,7 @@ class _AddMenuState extends State<AddMenu> {
                 child: _image == null
                     ? Image.asset('assets/ic_upload_picture.png')
                     : Image.file(
-                        _image!,
+                        _image! as File,
                         alignment: Alignment.center,
                         fit: BoxFit.fill,
                       )),
@@ -238,26 +237,42 @@ class _AddMenuState extends State<AddMenu> {
         ],
       );
 
-  Future captureImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
+  Future<XFile?> captureImage() async {
+    // final pickedFile = await picker.pickImage(source: source);
+    final ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
+      if (image != null) {
+        _image = image;
         uploadImage();
       } else {
         print('No image selected.');
       }
     });
+    return image;
   }
 
-  Future uploadImage() async {
+  Future<String?> uploadImage() async {
+    if (_image == null) return null;
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child('images/${DateTime.now().millisecondsSinceEpoch}_${_image!.name}');
+    UploadTask uploadTask = ref.putFile(File(_image!.path));
+
+    TaskSnapshot taskSnapshot = await uploadTask;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    print('this is image url : $downloadUrl');
+    return downloadUrl;
+  }
+
+ /* Future uploadImage() async {
     List<int> imageBytes = _image!.readAsBytesSync();
     String base64Image = await base64Encode(imageBytes);
     setState(() {
       foodImage = "base64Image";
     });
-  }
+  }*/
 
   void addData(){
     _addFoodBloc.add(OnSubmitButtonClicked(

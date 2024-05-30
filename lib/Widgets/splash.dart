@@ -43,14 +43,14 @@ class _SplashScreenState extends State<SplashScreen> {
     restId = prefs.getString('restaurant_id');
 
       if(restId==null) {
-        Navigator.popAndPushNamed(context, AppRoutes.signupScreen);
+        Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
       }
       else{
         var res = await getRestaurantStatus(restId);
         var _isRegistered = res.restaurantStatus.toString();
 
         if(_isRegistered=='CREATED'){
-          Navigator.popAndPushNamed(context, AppRoutes.pendingOnboarding);
+          Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
         }
         else{
           Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);

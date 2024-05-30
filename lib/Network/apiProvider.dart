@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
 import 'package:uggiso_restaurant/Model/RegisterUserModel.dart';
 import 'package:uggiso_restaurant/Model/RestaurantDetailsModel.dart';
+import 'package:uggiso_restaurant/Model/RestaurantOrderModel.dart';
 import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
 import '../Model/DeleteFoodModel.dart';
@@ -156,6 +157,19 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return GetRestaurantStatusModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<RestaurantOrderModel> getRestaurantOrder(String id) async {
+    try {
+      print('url : ${_url}${Constants.getRestaurantOrder}$id');
+      Response response = await _dio.get('${_url}${Constants.getRestaurantOrder}$id');
+      print("${response.data}");
+
+      return RestaurantOrderModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return RestaurantOrderModel.withError("Data not found / Connection issue");
     }
   }
 }

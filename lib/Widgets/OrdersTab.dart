@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
-
+import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedElevatedButton.dart';
 import '../base/common/utils/colors.dart';
 import '../base/common/utils/fonts.dart';
 import '../base/common/utils/strings.dart';
@@ -17,11 +18,12 @@ class _OrdersTabState extends State<OrdersTab> {
   final String _title = Strings.total_orders;
   final int _totalOrderPreparing = 0;
   final int _totalOrderReady = 0;
-  final int _totalOrderCompleted= 0;
+  final int _totalOrderCompleted = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.textFieldBorderColor,
       appBar: AppBar(
         elevation: 0,
         title: Text(
@@ -42,59 +44,183 @@ class _OrdersTabState extends State<OrdersTab> {
         ],
       ),
       body: Column(
-        children: [HeaderWidget()],
+        children: [
+          HeaderWidget(),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.65,
+            child: ListView.builder(
+              itemCount: 2,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Container(
+                        color: AppColors.white, child: ItemCard(title: 'jeee')),
+                    Gap(20),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget ItemCard({
+    required String title,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+      child: Container(
+        //consdiitoona basis if count is more than 4 then height wil increase
+        height: 260,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gap(12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RoundedContainer(
+                  width: 82,
+                  height: 36,
+                  cornerRadius: 5,
+                  color: AppColors.appPrimaryColor,
+                  child: Center(
+                    child: Text(
+                      'ID:8370',
+                      style: AppFonts.title
+                          .copyWith(color: AppColors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+                Text("1:21 PM"),
+              ],
+            ),
+            Gap(12),
+            Column(
+              children: List.generate(
+                3,
+                    (index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: RoundedContainer(
+                                width: 12,
+                                height: 12,
+                                cornerRadius: 0,
+                                child:
+                                Image.asset('assets/ic_veg.png'),
+                              ),
+                            ),
+                            TextSpan(
+                                text: "1X Veg Pizza",
+                                style: AppFonts.smallText),
+                          ],
+                        ),
+                      ),
+                      Text('01')
+                    ],
+                  );
+                },
+              ),
+            ),
+            Divider(),
+            Text(
+              'Description: Please make veg fired rice spicy',
+              style: AppFonts.smallText.copyWith(fontSize: 10),
+            ),
+            Text(
+              'Do not send cuttlery,tissues and straws',
+              style: AppFonts.smallText.copyWith(
+                fontSize: 10,
+                color: Colors.red,
+              ),
+            ),
+            Divider(),
+            Gap(8),
+            RoundedElevatedButton(
+              width: double.infinity,
+              height: 40,
+              text: 'hello',
+              onPressed: () {},
+              cornerRadius: 5,
+              buttonColor: AppColors.appPrimaryColor,
+              textStyle: AppFonts.smallText,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget HeaderWidget() => Container(
-        height: MediaQuery.of(context).size.height * 0.15,
-        decoration: const BoxDecoration(
-          color: AppColors.appPrimaryColor,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(32),
-              bottomRight: Radius.circular(24)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            RoundedContainer(
-              color: AppColors.white,
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.1,
-                cornerRadius: 24,
-                child: Column(
-                  children: [
-                    Text(Strings.preparing,style: AppFonts.title.copyWith(color: AppColors.appPrimaryColor)),
-                    Gap(12),
-                    Text(_totalOrderPreparing.toString(),style: AppFonts.subHeader.copyWith(color: AppColors.appPrimaryColor)),
-                  ],
-                )),
-            RoundedContainer(
-              color: AppColors.white,
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.1,
-                cornerRadius: 24,
-                child: Column(
-                  children: [
-                    Text(Strings.ready,style: AppFonts.title.copyWith(color: AppColors.appPrimaryColor)),
-                    Gap(12),
-                    Text(_totalOrderReady.toString(),style: AppFonts.subHeader.copyWith(color: AppColors.appPrimaryColor)),
-                  ],
-                )),
-            RoundedContainer(
-              color: AppColors.white,
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.1,
-                cornerRadius: 24,
-                child:  Column(
-                  children: [
-                    Text(Strings.completed,style: AppFonts.title.copyWith(color: AppColors.appPrimaryColor)),
-                    Gap(12),
-                    Text(_totalOrderCompleted.toString(),style: AppFonts.subHeader.copyWith(color: AppColors.appPrimaryColor)),
-                  ],
-                ))
-          ],
-        ),
-      );
+    height: MediaQuery.of(context).size.height * 0.11,
+    decoration: const BoxDecoration(
+      color: AppColors.appPrimaryColor,
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(24)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        RoundedContainer(
+            color: AppColors.white,
+            width: MediaQuery.of(context).size.width * 0.25,
+            height: MediaQuery.of(context).size.height * 0.07,
+            cornerRadius: 0,
+            borderColor: AppColors.appPrimaryColor,
+            child: Column(
+              children: [
+                Text(Strings.preparing,
+                    style: AppFonts.title.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+                Gap(4),
+                Text(_totalOrderPreparing.toString(),
+                    style: AppFonts.subHeader.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+              ],
+            )),
+        RoundedContainer(
+            color: AppColors.white,
+            width: MediaQuery.of(context).size.width * 0.28,
+            height: MediaQuery.of(context).size.height * 0.07,
+            cornerRadius: 0,
+            borderColor: AppColors.appPrimaryColor,
+            child: Column(
+              children: [
+                Text(Strings.ready,
+                    style: AppFonts.title.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+                Gap(4),
+                Text(_totalOrderReady.toString(),
+                    style: AppFonts.subHeader.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+              ],
+            )),
+        RoundedContainer(
+            color: AppColors.white,
+            width: MediaQuery.of(context).size.width * 0.28,
+            height: MediaQuery.of(context).size.height * 0.07,
+            borderColor: AppColors.appPrimaryColor,
+            cornerRadius: 0,
+            child: Column(
+              children: [
+                Text(Strings.completed,
+                    style: AppFonts.title.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+                Gap(4),
+                Text(_totalOrderCompleted.toString(),
+                    style: AppFonts.subHeader.copyWith(
+                        color: AppColors.appPrimaryColor, fontSize: 12)),
+              ],
+            ))
+      ],
+    ),
+  );
 }
