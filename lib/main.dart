@@ -8,7 +8,7 @@ import 'Bloc/VerifyOtpBloc/VerifyOtpBloc.dart';
 import 'app_routes.dart';
 
 
-void main()async {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);

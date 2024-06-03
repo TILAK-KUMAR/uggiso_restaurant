@@ -1,4 +1,4 @@
-package com.uggiso.restaurant.uggiso_restaurant
+package com.uggiso.restaurant
 
 import io.flutter.embedding.android.FlutterActivity
 
