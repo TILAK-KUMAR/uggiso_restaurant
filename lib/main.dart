@@ -10,7 +10,12 @@ import 'app_routes.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyCWj8HY1-QKdD_wPlE66teBYPem-5XiXlg',
+          appId: '1:1071073412864:android:54ef7ad9aa4191c51cd5e5',
+          messagingSenderId: '9964367047',
+          projectId: 'uggiso-restaurant'));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);
   runApp(
       MultiBlocProvider(

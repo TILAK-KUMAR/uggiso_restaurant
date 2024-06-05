@@ -18,7 +18,13 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           //String name,String number,String userType,String deviceId,String token
           var res = await _apiRepository.registerUser(event.name,event.number,
               'CUSTOMER',event.deviceId,event.token);
-          emit(onLoadedState(res.payload!.userId.toString()));
+          if(res.statusCode==200){
+            emit(onLoadedState(res.payload!.userId.toString()));
+
+          }
+          else{
+            emit(onUserRegisteredState(res.payload!.userId.toString(),res.payload!.name.toString()));
+          }
         }
         else{
           emit(ErrorState(''));
