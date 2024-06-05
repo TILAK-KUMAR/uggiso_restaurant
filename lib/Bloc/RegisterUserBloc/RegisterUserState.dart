@@ -18,7 +18,8 @@ class onLoadedState extends RegisterUserState {
 class onUserRegisteredState extends RegisterUserState {
   final String id;
   final String name;
-  const onUserRegisteredState(this.id,this.name);
+  final String restId;
+  const onUserRegisteredState(this.id,this.name,this.restId);
 }
 
 class ErrorState extends RegisterUserState {

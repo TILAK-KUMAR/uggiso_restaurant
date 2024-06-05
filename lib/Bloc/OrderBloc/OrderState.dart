@@ -17,6 +17,11 @@ class onLoadedState extends OrderState {
   const onLoadedState(this.data);
 }
 
+class onNoOrderFound extends OrderState {
+  final RestaurantOrderModel? data;
+  const onNoOrderFound(this.data);
+}
+
 class ErrorState extends OrderState {
   final String? message;
   const ErrorState(this.message);

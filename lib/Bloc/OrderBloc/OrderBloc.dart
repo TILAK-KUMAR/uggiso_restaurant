@@ -15,9 +15,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           var res = await _apiRepository.getRestaurantOrder(
               event.id);
           print('this is res : ${res}');
-          emit(onLoadedState(res));
+          if(res.statusCode==200){
+            emit(onLoadedState(res));
+          }
+          else{
+            emit(ErrorState(res.message));
+
+          }
         } else {
-          emit(ErrorState(''));
+          emit(ErrorState('Error Occured, Please Try After Sometime'));
         }
       } on NetworkError {
         print('this is network error');

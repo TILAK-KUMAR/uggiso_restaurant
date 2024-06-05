@@ -39,14 +39,14 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
             // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text,'fcmtoken',state.id);
+            saveUserDetails(_nameController.text,'fcmtoken',state.id,'');
 
             Navigator.popAndPushNamed(context, AppRoutes.addNewHotel);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
           }
           else if(state is onUserRegisteredState){
-            saveUserDetails(state.name,'fcmtoken',state.id);
+            saveUserDetails(state.name,'fcmtoken',state.id,state.restId);
             Navigator.popAndPushNamed(context, AppRoutes.dashboard);
 
           }
@@ -143,12 +143,15 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     });
   }
 
-  void saveUserDetails(String name,String token,String id) async {
+  void saveUserDetails(String name,String token,String id,String restId) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user_name', name);
     prefs.setString('device_id', userDeviceId);
     prefs.setString('fcm_token', token);
     prefs.setString('user_id', id);
+    if(restId.isNotEmpty){
+      prefs.setString('restaurant_id', restId);
+    }
   }
 
   @override
