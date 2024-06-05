@@ -257,7 +257,6 @@ class _OrdersTabState extends State<OrdersTab> {
     final prefs = await SharedPreferences.getInstance();
     String userId = '';
     userId = prefs.getString('restaurant_id') ?? '';
-    print('this is id for get order details : $userId');
     _orderBloc.add(OnOrderReceived(id: userId));
   }
 }

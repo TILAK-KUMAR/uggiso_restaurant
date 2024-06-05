@@ -20,7 +20,7 @@ class MenuTab extends StatefulWidget {
 
 class _MenuTabState extends State<MenuTab> {
   final AddFoodBloc _addFoodBloc = AddFoodBloc();
-  String restId='';
+  String restId = '';
 
   @override
   void initState() {
@@ -113,12 +113,29 @@ class _MenuTabState extends State<MenuTab> {
                 RoundedContainer(
                   width: MediaQuery.of(context).size.width * 0.2,
                   height: MediaQuery.of(context).size.height * 0.08,
-                  child: Image.asset(
-                    'assets/ic_no_image.png',
-                  ),
                   cornerRadius: 24,
                   padding: 0,
                   borderColor: AppColors.white,
+                  child: menuList.photo == null
+                      ? Image.asset(
+                          'assets/ic_no_image.png',
+                        )
+                      : Image.network(
+                          menuList.photo.toString(),
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            // Display a placeholder image or alternative content
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              height: MediaQuery.of(context).size.height * 0.08,
+                              child: Center(
+                                child: Image.asset(
+                                  'assets/ic_no_image.png',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                 ),
                 SizedBox(
                   width: 12,
@@ -192,12 +209,11 @@ class _MenuTabState extends State<MenuTab> {
     print('this is the callback received :::: $callback');
   }
 
-  void loadData() async{
+  void loadData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       restId = prefs.getString('restaurant_id') ?? '';
-
     });
-    _addFoodBloc.add( LoadMenuList(id: restId));
+    _addFoodBloc.add(LoadMenuList(id: restId));
   }
 }

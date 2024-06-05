@@ -17,7 +17,6 @@ import 'package:uggiso_restaurant/base/common/utils/fonts.dart';
 import 'package:uggiso_restaurant/base/common/utils/strings.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
 class AddMenu extends StatefulWidget {
   const AddMenu({super.key});
 
@@ -26,7 +25,8 @@ class AddMenu extends StatefulWidget {
 }
 
 class _AddMenuState extends State<AddMenu> {
-  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -242,7 +242,8 @@ class _AddMenuState extends State<AddMenu> {
       );
 
   Future captureImage() async {
-    final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -260,46 +261,31 @@ class _AddMenuState extends State<AddMenu> {
     final fileName = basename(_image!.path);
     final destination = 'files/$fileName';
 
-    setState(() {
-      foodImage = destination;
-    });
+
     try {
       final ref = firebase_storage.FirebaseStorage.instance
           .ref(destination)
           .child('file/');
       await ref.putFile(_image!);
+      final String downloadUrl = await ref.getDownloadURL();
+      setState(() {
+        foodImage = downloadUrl;
+      });
+
     } catch (e) {
       print('error occured');
     }
-
-   /* FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child('images/${DateTime.now().millisecondsSinceEpoch}_${_image!.name}');
-    UploadTask uploadTask = ref.putFile(File(_image!.path));
-
-    TaskSnapshot taskSnapshot = await uploadTask;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-    print('this is image url : $downloadUrl');
-    return downloadUrl;*/
   }
 
- /* Future uploadImage() async {
-    List<int> imageBytes = _image!.readAsBytesSync();
-    String base64Image = await base64Encode(imageBytes);
-    setState(() {
-      foodImage = "base64Image";
-    });
-  }*/
-
-  void addData(){
+  void addData() {
     _addFoodBloc.add(OnSubmitButtonClicked(
-      id: restaurantId,
-      title: titleController.text,
-      description: descriptionController.text,
-      menuType:'MEALS',
-      foodType: isFoodTypeClickedVeg?'VEG':'NONVEG',
-      price: priceController.text,
-      url: foodImage
-    ));
+        id: restaurantId,
+        title: titleController.text,
+        description: descriptionController.text,
+        menuType: 'MEALS',
+        foodType: isFoodTypeClickedVeg ? 'VEG' : 'NONVEG',
+        price: priceController.text,
+        url: foodImage));
   }
 
   void getRestaurantid() async {
