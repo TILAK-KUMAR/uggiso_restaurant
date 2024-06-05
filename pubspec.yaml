@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.2.3
   device_info_plus: ^9.1.2
   image_picker: ^1.0.8
+  path: ^1.9.0
   gap: ^3.0.1
   device_uuid: ^0.0.4
   geolocator: ^11.1.0

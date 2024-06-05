@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
         }
         else{
-          Navigator.popAndPushNamed(context, AppRoutes.successOnboarding);
+          Navigator.popAndPushNamed(context, AppRoutes.dashboard);
         }
       }
   }

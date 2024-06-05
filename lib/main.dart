@@ -15,7 +15,9 @@ void main() async{
           apiKey: 'AIzaSyCWj8HY1-QKdD_wPlE66teBYPem-5XiXlg',
           appId: '1:1071073412864:android:54ef7ad9aa4191c51cd5e5',
           messagingSenderId: '9964367047',
-          projectId: 'uggiso-restaurant'));
+          projectId: 'uggiso-restaurant',
+        storageBucket: 'gs://uggiso-restaurant-dac53.appspot.com',
+      ));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom],);
   runApp(
       MultiBlocProvider(

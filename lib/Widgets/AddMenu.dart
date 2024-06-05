@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uggiso_restaurant/Bloc/AddNewFoodItemBloc/AddFoodBloc.dart';
 import 'package:uggiso_restaurant/Bloc/AddNewFoodItemBloc/AddFoodEvent.dart';
@@ -15,6 +15,8 @@ import 'package:uggiso_restaurant/Widgets/ui-kit/TextFieldCurvedEdges.dart';
 import 'package:uggiso_restaurant/base/common/utils/colors.dart';
 import 'package:uggiso_restaurant/base/common/utils/fonts.dart';
 import 'package:uggiso_restaurant/base/common/utils/strings.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class AddMenu extends StatefulWidget {
   const AddMenu({super.key});
@@ -24,6 +26,7 @@ class AddMenu extends StatefulWidget {
 }
 
 class _AddMenuState extends State<AddMenu> {
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -32,13 +35,14 @@ class _AddMenuState extends State<AddMenu> {
   final AddFoodBloc _addFoodBloc = AddFoodBloc();
   TextInputType string = TextInputType.text;
   TextInputType number = TextInputType.number;
-  final picker = ImagePicker();
+  final ImagePicker _imagePicker = ImagePicker();
   String foodType = 'VEG';
   bool isFoodTypeClickedVeg = false;
   bool isFoodTypeClickedNonVeg = false;
   String restaurantId = '';
   String foodImage = '';
-  XFile? _image;
+  File? _image;
+  File? _photo;
 
   @override
   void initState() {
@@ -88,7 +92,7 @@ class _AddMenuState extends State<AddMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      UploadPicture(),
+                      UploadPicture(context),
                       SizedBox(
                         height: 12,
                       ),
@@ -185,7 +189,7 @@ class _AddMenuState extends State<AddMenu> {
     );
   }
 
-  Widget UploadPicture() => Row(
+  Widget UploadPicture(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
@@ -237,33 +241,45 @@ class _AddMenuState extends State<AddMenu> {
         ],
       );
 
-  Future<XFile?> captureImage() async {
-    // final pickedFile = await picker.pickImage(source: source);
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  Future captureImage() async {
+    final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      if (image != null) {
-        _image = image;
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
         uploadImage();
       } else {
         print('No image selected.');
       }
     });
-    return image;
+    // return image;
   }
 
-  Future<String?> uploadImage() async {
-    if (_image == null) return null;
+  Future uploadImage() async {
+    if (_image == null) return;
+    final fileName = basename(_image!.path);
+    final destination = 'files/$fileName';
 
-    FirebaseStorage storage = FirebaseStorage.instance;
+    setState(() {
+      foodImage = destination;
+    });
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      await ref.putFile(_image!);
+    } catch (e) {
+      print('error occured');
+    }
+
+   /* FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child('images/${DateTime.now().millisecondsSinceEpoch}_${_image!.name}');
     UploadTask uploadTask = ref.putFile(File(_image!.path));
 
     TaskSnapshot taskSnapshot = await uploadTask;
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     print('this is image url : $downloadUrl');
-    return downloadUrl;
+    return downloadUrl;*/
   }
 
  /* Future uploadImage() async {
@@ -276,7 +292,7 @@ class _AddMenuState extends State<AddMenu> {
 
   void addData(){
     _addFoodBloc.add(OnSubmitButtonClicked(
-      id: '51f6e514-80ab-466f-9ccc-916d80850c4d',
+      id: restaurantId,
       title: titleController.text,
       description: descriptionController.text,
       menuType:'MEALS',
