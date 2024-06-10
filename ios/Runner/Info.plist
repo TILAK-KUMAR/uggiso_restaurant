@@ -51,5 +51,18 @@
     <string>Your location is used to display the map accurately.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Your location is used to display the map accurately.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!-- Allow loading HTTP resources -->
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location is required for push notifications.</string>
 </dict>
 </plist>

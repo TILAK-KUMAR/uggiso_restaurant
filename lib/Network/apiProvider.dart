@@ -6,6 +6,7 @@ import 'package:uggiso_restaurant/Model/RestaurantOrderModel.dart';
 import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
 import '../Model/DeleteFoodModel.dart';
+import '../Model/EditMenuModel.dart';
 import '../Model/GetRestaurantStatusModel.dart';
 import '../Model/RegisterRestaurantModel.dart';
 import 'constants.dart';
@@ -170,6 +171,29 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return RestaurantOrderModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  Future<EditMenuModel> editFoodItem(String menuId,String restaurantId,String menuName,String description,
+      String menuType,bool veg,String price,bool bestSeller,String photo) async {
+
+    try {
+      Response response = await _dio.put('${_url}${Constants.editMenu}',data: {
+        "menuId": menuId,
+        "restaurantId": restaurantId,
+        "menuName": menuName,
+        "photo": photo,
+        "description": description,
+        "menuType": menuType,
+        "veg": veg,
+        "price": price,
+        "bestSeller": bestSeller
+      });
+      print("${response.data}");
+      return EditMenuModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return EditMenuModel.withError("Data not found / Connection issue");
     }
   }
 }

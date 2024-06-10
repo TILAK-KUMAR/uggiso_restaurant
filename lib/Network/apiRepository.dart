@@ -7,6 +7,7 @@ import 'package:uggiso_restaurant/Model/VerifyOtpModel.dart';
 import 'package:uggiso_restaurant/Model/otpModel.dart';
 import 'package:uggiso_restaurant/Network/apiProvider.dart';
 import '../Model/DeleteFoodModel.dart';
+import '../Model/EditMenuModel.dart';
 import '../Model/RegisterRestaurantModel.dart';
 
 class ApiRepository {
@@ -59,5 +60,11 @@ class ApiRepository {
   Future<RestaurantOrderModel> getRestaurantOrder(String id) {
     return _provider.getRestaurantOrder(id);
   }
+
+  Future<EditMenuModel> editFoodItem(String menuId,String restaurantId,String menuName,String description,
+      String menuType,bool veg,String price,bool bestSeller,String photo) {
+    return _provider.editFoodItem(menuId,restaurantId,menuName,description,menuType,veg,price,bestSeller,photo);
+  }
+
 
 }

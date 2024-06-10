@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
 import 'package:uggiso_restaurant/Widgets/AddMenu.dart';
 import 'package:uggiso_restaurant/Widgets/AddNewHotelScreen.dart';
+import 'package:uggiso_restaurant/Widgets/EditMenuScreen.dart';
 import 'package:uggiso_restaurant/Widgets/HomeScreen.dart';
 import 'package:uggiso_restaurant/Widgets/OnboardingPending.dart';
 import 'package:uggiso_restaurant/Widgets/SuccessfulOnboardingMessage.dart';
+import 'package:uggiso_restaurant/base/common/EditMenuArgs.dart';
 
 import 'Widgets/RegisterUserScreen.dart';
 import 'Widgets/SignUpScreen.dart';
@@ -37,6 +40,8 @@ class AppRoutes {
 
   static const String addNewMenuItem = '/add_new_menu_item';
 
+  static const String editMenuItem = '/edit_menu_item';
+
   static const String successOnboarding = '/onboarding_success';
 
   static const String pendingOnboarding = '/pending_onboarding';
@@ -60,13 +65,18 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       case addNewMenuItem:
-        return MaterialPageRoute(builder: (_) => const AddMenu());
+        return MaterialPageRoute(builder: (_) => AddMenu());
 
       case successOnboarding:
         return MaterialPageRoute(builder: (_) => const SuccessfulOnboardingMessage());
 
       case pendingOnboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingPending());
+
+      case editMenuItem:
+        final args = settings.arguments as EditMenuArgs;
+        return MaterialPageRoute(builder: (_) => EditMenuScreen(payload: args.payload));
+
       default:
         // If there is no such named route in the switch statement, e.g. /randomRoute
         return MaterialPageRoute(builder: (_) {

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
+import '../../Model/EditMenuModel.dart';
 import '../../Network/NetworkError.dart';
 import '../../Network/apiRepository.dart';
 import 'AddFoodEvent.dart';
@@ -52,6 +53,23 @@ class AddFoodBloc extends Bloc<AddFoodEvent, AddFoodState> {
           final loadData = await _apiRepository.getAddedMenu('51f6e514-80ab-466f-9ccc-916d80850c4d');
           final List<Payload>? items = loadData.payload; // Extract the list from the response
           emit(onLoadedState(items));
+        } else {
+          emit(ErrorState(res.message));
+        }
+      }on NetworkError {
+        emit(ErrorState('this is network error'));
+      }
+    });
+
+    on<onEditMenuItem>((event,emit)async{
+      try{
+        emit(LoadingState()) ;
+
+        final res = await _apiRepository.editFoodItem(event.menuId,event.restaurantId,event.menuName,
+        event.description,event.menuType,event.veg,event.price,event.bestSeller,event.url);
+        if(res.statusCode == 200) {
+          final List<EditMenuPayload>? items = res.payload as List<EditMenuPayload>?;
+          emit(onFoodEditedState(items));
         } else {
           emit(ErrorState(res.message));
         }

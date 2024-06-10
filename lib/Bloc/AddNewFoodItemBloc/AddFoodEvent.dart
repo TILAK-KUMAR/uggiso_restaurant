@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../Model/AddFoodModel.dart';
+
 abstract class AddFoodEvent extends Equatable {
   const AddFoodEvent();
 }
@@ -41,4 +43,24 @@ class onDeleteMenuItem extends AddFoodEvent{
   @override
   // TODO: implement props
   List<Object> get props => [id];
+}
+
+class onEditMenuItem extends AddFoodEvent{
+  final String menuId;
+  final String restaurantId;
+  final String menuName;
+  final String description;
+  final String price;
+  final bool veg;
+  final String menuType;
+  final String url;
+  final bool bestSeller;
+
+  const onEditMenuItem({required this.menuId,required this.restaurantId,required this.menuName,
+    required this.description, required this.menuType, required this.veg,required this.price,
+    required this.bestSeller,required this.url});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [menuName];
 }

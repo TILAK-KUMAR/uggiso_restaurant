@@ -6,6 +6,7 @@ import 'package:uggiso_restaurant/Bloc/AddNewFoodItemBloc/AddFoodEvent.dart';
 import 'package:uggiso_restaurant/Bloc/AddNewFoodItemBloc/AddFoodState.dart';
 import 'package:uggiso_restaurant/Model/AddFoodModel.dart';
 import 'package:uggiso_restaurant/Widgets/ui-kit/RoundedContainer.dart';
+import 'package:uggiso_restaurant/base/common/EditMenuArgs.dart';
 import 'package:uggiso_restaurant/base/common/utils/colors.dart';
 import 'package:uggiso_restaurant/base/common/utils/fonts.dart';
 import '../app_routes.dart';
@@ -122,6 +123,7 @@ class _MenuTabState extends State<MenuTab> {
                         )
                       : Image.network(
                           menuList.photo.toString(),
+
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {
                             // Display a placeholder image or alternative content
@@ -170,7 +172,9 @@ class _MenuTabState extends State<MenuTab> {
                 SizedBox(width: 12),
                 InkWell(
                     onTap: () {
-                      print('this is clicked :${menuList.menuId}');
+                      print('this is clicked :${menuList}');
+                      Navigator.pushNamed(context, AppRoutes.editMenuItem,arguments: EditMenuArgs(payload: menuList));
+
                     },
                     child: Image.asset(
                       'assets/ic_edit.png',
@@ -205,8 +209,7 @@ class _MenuTabState extends State<MenuTab> {
       );
 
   void goToAddMenuItemPage() {
-    Future callback = Navigator.pushNamed(context, AppRoutes.addNewMenuItem);
-    print('this is the callback received :::: $callback');
+    Navigator.pushNamed(context, AppRoutes.addNewMenuItem);
   }
 
   void loadData() async {

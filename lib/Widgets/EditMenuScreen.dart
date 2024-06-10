@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,16 +19,16 @@ import 'package:uggiso_restaurant/base/common/utils/fonts.dart';
 import 'package:uggiso_restaurant/base/common/utils/strings.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class AddMenu extends StatefulWidget {
-   const AddMenu({super.key});
+class EditMenuScreen extends StatefulWidget {
+  final Payload payload;
+  const EditMenuScreen({super.key,required this.payload});
 
   @override
-  State<AddMenu> createState() => _AddMenuState();
+  State<EditMenuScreen> createState() => _EditMenuScreenState();
 }
 
-class _AddMenuState extends State<AddMenu> {
+class _EditMenuScreenState extends State<EditMenuScreen> {
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController timeController = TextEditingController();
@@ -45,8 +46,12 @@ class _AddMenuState extends State<AddMenu> {
 
   @override
   void initState() {
+    print('this is payload received: ${widget.payload}');
 
-    getRestaurantid();
+      getRestaurantid();
+      descriptionController.text = widget.payload.description!;
+      priceController.text = widget.payload.price!.toString();
+      _image = File(widget.payload.photo!);
     super.initState();
   }
 
@@ -87,7 +92,7 @@ class _AddMenuState extends State<AddMenu> {
               height: double.infinity,
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,8 +101,20 @@ class _AddMenuState extends State<AddMenu> {
                       SizedBox(
                         height: 12,
                       ),
-                      TitleDiscriptionWidget(
-                          Strings.dish_title, titleController, string, false),
+                      RoundedContainer(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '${widget.payload.menuName}',
+                              style:
+                              AppFonts.title.copyWith(color: AppColors.borderColor,fontSize: 18),
+                            ),
+                          ),
+                          cornerRadius: 10),
+                      /*TitleDiscriptionWidget(
+                          Strings.dish_title, titleController, string, false),*/
                       TitleDiscriptionWidget(Strings.dish_discription,
                           descriptionController, string, true),
                       TitleDiscriptionWidget(
@@ -127,7 +144,7 @@ class _AddMenuState extends State<AddMenu> {
                             child: RoundedContainer(
                                 width: MediaQuery.of(context).size.width * 0.2,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.04,
+                                MediaQuery.of(context).size.height * 0.04,
                                 color: isFoodTypeClickedVeg
                                     ? AppColors.grey
                                     : AppColors.white,
@@ -149,7 +166,7 @@ class _AddMenuState extends State<AddMenu> {
                             child: RoundedContainer(
                                 width: MediaQuery.of(context).size.width * 0.2,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 color: isFoodTypeClickedNonVeg
                                     ? AppColors.grey
                                     : AppColors.white,
@@ -190,33 +207,47 @@ class _AddMenuState extends State<AddMenu> {
   }
 
   Widget UploadPicture(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            Strings.upload_picture,
-            style: AppFonts.smallText.copyWith(fontSize: 16),
-          ),
-          InkWell(
-            onTap: () => captureImage(),
-            child: RoundedContainer(
-                width: MediaQuery.of(context).size.width * 0.2,
-                height: MediaQuery.of(context).size.height * 0.1,
-                cornerRadius: 20,
-                borderColor: AppColors.white,
-                padding: 0,
-                child: _image == null
-                    ? Image.asset('assets/ic_upload_picture.png')
-                    : Image.file(
-                        _image! as File,
-                        alignment: Alignment.center,
-                        fit: BoxFit.fill,
-                      )),
-          ),
-        ],
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        Strings.upload_picture,
+        style: AppFonts.smallText.copyWith(fontSize: 16),
+      ),
+      InkWell(
+        onTap: () => captureImage(),
+        child: RoundedContainer(
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.height * 0.1,
+            cornerRadius: 20,
+            borderColor: AppColors.white,
+            padding: 0,
+            child: _image == null
+                ? Image.asset('assets/ic_upload_picture.png')
+                : foodImage!=''?Image.file(
+              _image! as File,
+              alignment: Alignment.center,
+              fit: BoxFit.fill,
+            ):Image.network(
+              foodImage,
+
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                // Display a placeholder image or alternative content
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: Center(
+                    child: Image.asset('assets/ic_upload_picture.png')
+                  ),
+                );
+              },
+            ),),
+      ),
+    ],
+  );
 
   Widget TitleDiscriptionWidget(String title, TextEditingController controller,
-          TextInputType inputType, bool isMultiLines) =>
+      TextInputType inputType, bool isMultiLines) =>
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -243,7 +274,7 @@ class _AddMenuState extends State<AddMenu> {
 
   Future captureImage() async {
     final pickedFile =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -278,14 +309,21 @@ class _AddMenuState extends State<AddMenu> {
   }
 
   void addData() {
-    _addFoodBloc.add(OnSubmitButtonClicked(
-        id: restaurantId,
-        title: titleController.text,
+    print('this is edit food request : menuId: ${widget.payload.menuId!},'
+        'restaurantId: ${widget.payload.restaurantId!},'
+        'menuName: ${widget.payload.menuName!},'
+        'description: ${descriptionController.text},'
+        'menuType: MEALS,veg: ${isFoodTypeClickedVeg} ? true : false,'
+        'price: ${priceController.text},url: $foodImage, bestSeller: false');
+    _addFoodBloc.add(onEditMenuItem(
+      menuId: widget.payload.menuId!,
+        restaurantId: widget.payload.restaurantId!,
+        menuName: widget.payload.menuName!,
         description: descriptionController.text,
         menuType: 'MEALS',
-        foodType: isFoodTypeClickedVeg ? 'VEG' : 'NONVEG',
+        veg: isFoodTypeClickedVeg ? true : false,
         price: priceController.text,
-        url: foodImage));
+        url: foodImage, bestSeller: false));
   }
 
   void getRestaurantid() async {

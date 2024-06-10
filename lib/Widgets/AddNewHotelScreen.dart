@@ -396,9 +396,9 @@ class _AddNewHotelScreenState extends State<AddNewHotelScreen> {
             borderColor: AppColors.borderColor,
             borderRadius: 6,
           ),
-         /* const SizedBox(height: 10.0),
+         const SizedBox(height: 10.0),
           Text(Strings.hotel_image,
-              style: AppFonts.title.copyWith(color: AppColors.textColor)),*/
+              style: AppFonts.title.copyWith(color: AppColors.textColor)),
           const SizedBox(height: 10.0),
           Container(
             alignment: Alignment.bottomCenter,
