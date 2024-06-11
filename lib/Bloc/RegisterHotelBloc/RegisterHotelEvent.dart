@@ -8,6 +8,7 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
   final String id;
   final String name;
   final String phone;
+  final String restaurantMenuType;
   final String address;
   final String landmark;
   final String city;
@@ -16,6 +17,8 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
   final String ifsc;
   final String upi;
   final String image;
+  final String gstNumber;
+  final double gstPercent;
   final double lat;
   final double lng;
 
@@ -23,6 +26,7 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
     required this.id,
     required this.name,
     required this.phone,
+    required this.restaurantMenuType,
     required this.address,
     required this.landmark,
     required this.city,
@@ -31,6 +35,8 @@ class OnSubmitButtonClicked extends RegisterHotelEvent {
     required this.ifsc,
     required this.upi,
     required this.image,
+    required this.gstNumber,
+    required this.gstPercent,
     required this.lat,
     required this.lng,
   });

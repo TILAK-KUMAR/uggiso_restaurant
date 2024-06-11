@@ -17,6 +17,7 @@ class RegisterHotelBloc extends Bloc<RegisterHotelEvent, RegisterHotelState> {
               event.id,
               event.name,
               event.phone,
+              event.restaurantMenuType,
               event.address,
               event.landmark,
               event.city,
@@ -25,6 +26,8 @@ class RegisterHotelBloc extends Bloc<RegisterHotelEvent, RegisterHotelState> {
               event.ifsc,
               event.upi,
               event.image,
+              event.gstNumber,
+              event.gstPercent,
               event.lat,
               event.lng);
           print('this is res : ${res.payload?.restaurantId}');

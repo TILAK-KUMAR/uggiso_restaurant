@@ -24,6 +24,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final RegisterUserBloc _registerUserBloc = RegisterUserBloc();
   String userContactNumber = '';
   String userDeviceId = '';
+  String fcmToken = '';
 
   @override
   void initState() {
@@ -38,17 +39,21 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       child: BlocListener<RegisterUserBloc, RegisterUserState>(
         listener: (BuildContext context, RegisterUserState state) {
           if (state is onLoadedState) {
-            // Navigate to the next screen when NavigationState is emitted
-            saveUserDetails(_nameController.text,'fcmtoken',state.id,'');
+            saveUserDetails(_nameController.text,fcmToken,state.id,'');
 
             Navigator.popAndPushNamed(context, AppRoutes.addNewHotel);
           } else if (state is ErrorState) {
             // isInvalidCredentials = true;
           }
           else if(state is onUserRegisteredState){
-            saveUserDetails(state.name,'fcmtoken',state.id,state.restId);
-            Navigator.popAndPushNamed(context, AppRoutes.dashboard);
-
+            if(state.restId==''){
+              saveUserDetails(_nameController.text,fcmToken,state.id,'');
+              Navigator.popAndPushNamed(context, AppRoutes.addNewHotel);
+            }
+            else{
+              saveUserDetails(state.name,fcmToken,state.id,state.restId);
+              Navigator.popAndPushNamed(context, AppRoutes.dashboard);
+            }
           }
         },
         child: Scaffold(
@@ -117,7 +122,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                                   name: _nameController.text,
                                   number: userContactNumber,
                                   deviceId: userDeviceId,
-                                  token: "FcmTokenId"));
+                                  token: fcmToken));
                             },
                             cornerRadius: 6.0,
                             buttonColor: AppColors.appPrimaryColor,
@@ -140,7 +145,9 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     setState(() {
       userContactNumber = prefs.getString('mobile_number') ?? '';
       userDeviceId = prefs.getString('device_id') ?? '';
+      fcmToken = prefs.getString('fcm_token')??'';
     });
+    print('this is fcm token : $fcmToken');
   }
 
   void saveUserDetails(String name,String token,String id,String restId) async {

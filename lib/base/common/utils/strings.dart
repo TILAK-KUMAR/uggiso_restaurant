@@ -98,6 +98,8 @@ class Strings{
   static const verified  = 'Verified';
   static const verified_success  = 'Yahoo! You have successfully verified the account.';
   static const proceed  = 'Proceed';
+  static const gst_percentage = 'GST Percentage';
+  static const restaurant_menu_type = 'Menu Type';
 
   static const List<Map<String, dynamic>> profileItemList = [
     {'image': 'assets/ic_fire.png', 'title': your_orders},
@@ -147,6 +149,9 @@ class Strings{
     'Indonesian',
     'Russian',
     'Caribbean',
+  ];
+  static const List<String> menu_Type_List = [
+    'VEG','NONVEG'
   ];
   static const List<String> opening_hour_list = [
   '5:00 AM',

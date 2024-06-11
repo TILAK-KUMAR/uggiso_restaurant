@@ -25,7 +25,12 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           else{
             var restaurantData = await _apiRepository.getResaturantDetails(res.payload!.userId.toString());
             print('restaurant Data  :$restaurantData');
-            emit(onUserRegisteredState(res.payload!.userId.toString(),res.payload!.name.toString(),restaurantData.payload!.restaurantId.toString()));
+            if(restaurantData.payload?.restaurantId==null){
+              emit(onUserRegisteredState(res.payload!.userId.toString(),res.payload!.name.toString(),''));
+
+            }else{
+              emit(onUserRegisteredState(res.payload!.userId.toString(),res.payload!.name.toString(),restaurantData.payload!.restaurantId.toString()));
+            }
           }
         }
         else{

@@ -68,9 +68,13 @@ class _SplashScreenState extends State<SplashScreen> {
     return res.payload;
   }
 
-  void initFirebaseMessaging() {
+  void initFirebaseMessaging() async{
+    final prefs = await SharedPreferences.getInstance();
+
     _firebaseMessaging.getToken().then((token) {
       print("FCM Token: $token");
+      prefs.setString('fcm_token', token!);
+
       setState(() {
         fcmToken = token;
       });

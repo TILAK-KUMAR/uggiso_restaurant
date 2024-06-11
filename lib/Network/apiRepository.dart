@@ -28,10 +28,10 @@ class ApiRepository {
     return _provider.registerUser(name,number,userType,deviceId,token);
   }
 
-  Future<RegisterReataurantModel> registerRestaurant(String id,String name,String number,
+  Future<RegisterReataurantModel> registerRestaurant(String id,String name,String number,String restaurantMenuType,
       String address,String landmark,String city,String state,String accountNumber,String ifscCode,
-      String upiData,String imageUrl,double lat, double lng) {
-    return _provider.registerRestaurant(id,name,number,address,landmark,city,state,accountNumber,ifscCode,upiData,imageUrl,lat,lng);
+      String upiData,String imageUrl,String gstNumber,double gstPercent, double lat, double lng) {
+    return _provider.registerRestaurant(id,name,number,restaurantMenuType,address,landmark,city,state,accountNumber,ifscCode,upiData,imageUrl,gstNumber,gstPercent,lat,lng);
   }
 
 
