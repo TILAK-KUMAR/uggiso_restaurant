@@ -84,7 +84,8 @@ class ApiProvider {
         "gstNumber":gstNumber,
         "gstPercent":gstPercent,
         "lat":lat,
-        "lng":lng
+        "lng":lng,
+        "userStatus":"CREATED"
       });
       print("${response.data}");
 
